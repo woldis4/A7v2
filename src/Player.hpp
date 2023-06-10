@@ -20,13 +20,13 @@ public:
     float find_player_score(int week_num);
     float calculate_avarage_score();
     int get_price();
+    vector<WeekStats> weekstats;
 private:
     int price;
     string name;
     int role;
     int cnt_yellow_cards;
     bool can_play;
-    vector<WeekStats> weekstats;
 };
 
 class Goalkeeper : public Player

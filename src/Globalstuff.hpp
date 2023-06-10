@@ -79,7 +79,7 @@ const int COMMAND_CLASS_CNT = 4;
 const int COMMAND_TYPE_CNT = 15;
 const int INF = 1e9;
 const int ALLOWED_TRANSFERS_WHEN_COMPLETE = 2;
-const int NOT_PLAYED_SCORE = -1;
+const int NOT_PLAYED_SCORE = 0;
 const int SCORE_PRECISION = 1;
 const int DEFAULT_BUDGET = 2500;
 
@@ -92,6 +92,7 @@ const string BAD_REQUEST = "Bad Request";
 const string PERMISSION_DENIED = "Permission Denied";
 const string NOT_FOUND = "Not Found";
 const string OK = "OK";
+const string OWN_GOAL = "OWN_GOAL";
 
 vector <string> split_line_into_words(string line, char delimiter);
 

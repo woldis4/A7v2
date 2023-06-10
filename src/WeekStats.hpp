@@ -11,8 +11,8 @@ public:
     bool get_has_yellow_card();
     bool get_has_red_card();
     bool get_is_injured();
-private:
     float score;
+private:
     bool is_injured;
     bool has_yellow_card;
     bool has_red_card;
