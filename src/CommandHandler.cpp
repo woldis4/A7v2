@@ -284,6 +284,43 @@ string CommandHandler::sell_player(vector <string> command)
     return OK;
 }
 
+string CommandHandler::set_captain(vector <string> command)
+{
+    if ((int)command.size() < 5 || command[2] != "?" || command[3] != "name")
+        return BAD_REQUEST;
+    if (!session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    string team_name = session->get_current_user_teamname();
+    string captain_name = command[4];
+    for (int i = 5; i < (int)command.size(); ++i)
+    {
+        captain_name += " ";
+        captain_name += command[i];
+    }
+    Team* my_team = futfan->find_team_by_name(team_name);
+    Player* captain = futfan->find_player_by_name(captain_name);
+    try
+    {
+        my_team->set_captain(captain);
+    } catch(NotFound& err){
+        return err.out();
+    }
+    return OK;
+}
+
+string CommandHandler::show_budget(vector <string> command)
+{
+    ostringstream out;
+    if ((int)command.size() != 2)
+        return BAD_REQUEST;
+    if (!session->is_user_logged_in)
+        return PERMISSION_DENIED;
+    string team_name = session->get_current_user_teamname();
+    Team* my_team = futfan->find_team_by_name(team_name);
+    out << my_team->get_budget();
+    return out.str();
+}
+
 string CommandHandler::get_users_ranking(vector <string> command)
 {
     if ((int)command.size() != 2)
@@ -356,6 +393,12 @@ void CommandHandler::handle_commands()
 
         if (command_num == SELL_PLAYER)
             cout << sell_player(command_words) << endl;
+
+        if (command_num == SET_CAPTAIN)
+            cout << set_captain(command_words) << endl;
+
+        if (command_num == SHOW_BUDGET)
+            cout << show_budget(command_words) << endl;
 
         if (command_num == USERS_RANKING)
             cout << get_users_ranking(command_words);

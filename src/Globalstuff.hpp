@@ -17,10 +17,10 @@ using namespace std;
 
 
 enum ROLE { GK, DF, MD, FW};
-enum WEEK_INFO { MATCH, RESULT, INJURED, YELLOW_CARD, RED_CARD, SCORES};
+enum WEEK_INFO { MATCH, RESULT, INJURED, YELLOW_CARD, RED_CARD, GOALS_AND_ASSISTS, TEAM1, TEAM2};
 enum COMMAND_TYPE_NUM {TEAM_OF_THE_WEEK, PLAYERS, LEAGUE_STANDINGS, USERS_RANKING,
     MATCHES_RESULT_LEAGUE, SIGNUP, LOGIN, REGISTER_ADMIN, LOGOUT, SELL_PLAYER,
-    BUY_PLAYER, SQUAD, CLOSE_TRANSFER_WINDOW, OPEN_TRANSFER_WINDOW, PASS_WEEK};
+    BUY_PLAYER, SET_CAPTAIN, SQUAD, SHOW_BUDGET, CLOSE_TRANSFER_WINDOW, OPEN_TRANSFER_WINDOW, PASS_WEEK};
 
 
 const string ROLE_NAME[] = {"GoalKeeper", "Defender", "Midfielder", "Forward"};
@@ -44,7 +44,9 @@ const vector <CommandType> COMMAND_TYPE = {
     {"POST", "logout"}, //done
     {"POST", "sell_player"},
     {"POST", "buy_player"},
+    {"POST", "set_captain"},
     {"GET", "squad"}, //done
+    {"GET", "show_budget"},
     {"POST", "close_transfer_window"}, //done
     {"POST", "open_transfer_window"}, //done
     {"POST", "pass_week"}
@@ -56,6 +58,7 @@ const char COMMA = ',';
 const char SPACE = ' ';
 const char NAME_DELIM = ';';
 const char SCORE_DELIM = ':';
+const char PRICE_DELIM = ':';
 const char CLUB_DELIM = '_';
 
 
@@ -78,6 +81,7 @@ const int INF = 1e9;
 const int ALLOWED_TRANSFERS_WHEN_COMPLETE = 2;
 const int NOT_PLAYED_SCORE = -1;
 const int SCORE_PRECISION = 1;
+const int DEFAULT_BUDGET = 2500;
 
 const string NOT_AVAILABLE_FOR_PURCHASE = "This Player is not available for next week";
 const string LEAGUE_ADDRESS = "data/premier_league.csv";

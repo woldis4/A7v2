@@ -1,8 +1,9 @@
 #include "Player.hpp"
 
-Player::Player(string _name, int _role)
+Player::Player(string _name, int _price, int _role)
 {
     can_play = true;
+    price = _price;
     name = _name;
     role = _role;
     cnt_yellow_cards = 0;
@@ -100,3 +101,20 @@ bool Player::is_available()
 {
     return can_play;
 }
+
+int Player::get_price()
+{
+    return price;
+}
+
+Goalkeeper::Goalkeeper(string _name, int _price) : Player(_name, _price, GK)
+{}
+
+Defender::Defender(string _name, int _price) : Player(_name, _price, DF)
+{}
+
+Midfielder::Midfielder(string _name, int _price) : Player(_name, _price, MD)
+{}
+
+Striker::Striker(string _name, int _price) : Player(_name, _price, FW)
+{}

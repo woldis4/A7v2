@@ -16,7 +16,7 @@ public:
     Player* find_player_by_name(string player_name);
     Club* find_club_by_name(string club_name);
     Team* find_team_by_name(string team_name);
-    void add_player(string player_name, int role);
+    void add_player(string player_name, int price, int role);
     void add_club(string club_name);
     Team* add_team(string team_name);
     void add_player_to_club(string club_name, string player_name);
@@ -33,7 +33,7 @@ public:
 private:
     vector <Player*> players;
     vector <Club*> clubs;
-    vector<vector<Match>> all_matches;
+    vector<vector<Match*>> all_matches;
     vector<vector<string>> make_file_lines(string file_address, char delimiter);
     vector<Team*> teams;
 };

@@ -24,6 +24,8 @@ public:
     string get_match_results(vector <string> command);
     string buy_player(vector <string> command);
     string sell_player(vector <string> command);
+    string set_captain(vector <string> command);
+    string show_budget(vector <string> command);
     string get_users_ranking(vector <string> command);
     string pass_week(vector <string> command);
     

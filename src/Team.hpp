@@ -16,11 +16,15 @@ public:
     void buy_player(Player* player);
     void sell_player(string player_name);
     void update_new_week(int week_num);
+    void set_captain(Player* _captain);
+    int get_budget();
 private:
+    int budget;
     float total_points;
     bool official;
     int allowed_transfers;
     string team_name;
+    Player* captain;
     vector <Player*> squad[ROLE_CNT];
 };
 

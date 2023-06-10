@@ -7,6 +7,8 @@ bool sort_by_player_name(Player* i, Player* j)
 
 Team::Team(string team_name_)
 {
+    budget = DEFAULT_BUDGET;
+    captain = NULL;
     total_points = 0;
     team_name = team_name_;
     allowed_transfers = INF;
@@ -43,6 +45,7 @@ void Team::buy_player(Player* player)
         throw BadRequest();
     squad[player_role].push_back(player);
     --allowed_transfers;
+    budget -= player->get_price();
 
     if (official)
         return ;
@@ -71,6 +74,7 @@ void Team::sell_player(string player_name)
             {
                 squad[i].erase(squad[i].begin() + j);
                 --allowed_transfers;
+                budget += player->get_price();
                 return ;
             }
         }
@@ -107,8 +111,31 @@ void Team::update_new_week(int week_num)
         if ((int)squad[i].size() != SQUAD_POS_NUM[i])
             squad_is_complete = false;
         for (Player* player : squad[i])
-            last_week_points += player->calculate_avarage_score();
+        {
+            float player_average_score = player->calculate_avarage_score();
+            if (player->get_name() == captain->get_name())
+                last_week_points += player_average_score*2;
+            else
+                last_week_points += player_average_score;
+        }
     }
     if (squad_is_complete)
         total_points += last_week_points;
+}
+
+void Team::set_captain(Player* _captain)
+{
+    bool is_in_team = false;
+    for (int i = 0; i < ROLE_CNT; ++i)
+        for (Player* player : squad[i])
+            if (player->get_name() == _captain->get_name())
+                is_in_team = true;
+    if (!is_in_team)
+        throw NotFound();
+    captain = _captain;
+}
+
+int Team::get_budget()
+{
+    return budget;
 }
