@@ -24,12 +24,15 @@ bool cmp_player(Player *i, Player *j)
 
 FutFan::~FutFan()
 {
-    for (Player *player : players)
+    for (Player* player : players)
         delete player;
-    for (Club *club : clubs)
+    for (Club* club : clubs)
         delete club;
-    for (Team *team : teams)
+    for (Team* team : teams)
         delete team;
+    for (int i = 0; i < (int)all_matches.size(); ++i)
+        for (Match* match : all_matches[i])
+            delete match;
 }
 
 void FutFan::add_player(string player_name, int price, int role)
@@ -141,7 +144,40 @@ void FutFan::get_league_data(string file_address)
 void FutFan::make_new_week_stats(int week_num)
 {
     for (Player *player : players)
-        player->add_week_stats(week_num);
+        player->add_empty_week_stats(week_num);
+}
+
+void FutFan::add_new_match(string home_team, string away_team, int home_team_score, int away_team_score,
+                           vector <string> team1, vector <string> team2,
+                           vector <pair<string, string> > goals_assists, int week_num)
+{
+    vector <Player*> team1_players, team2_players;
+    for (string player_name : team1)
+        team1_players.push_back(find_player_by_name(player_name));
+    for (string player_name : team2)
+        team2_players.push_back(find_player_by_name(player_name));
+    Club *home_club = find_club_by_name(home_team);
+    Club *away_club = find_club_by_name(away_team);
+
+    Match* current_match = new Match(home_club, away_club, home_team_score, away_team_score,
+                                     team1_players, team2_players, goals_assists);
+    current_match->update_players_score(week_num);
+    all_matches[week_num - 1].push_back(current_match);
+    if (home_team_score == away_team_score)
+    {
+        home_club->update_standing(home_team_score, away_team_score, DRAW_POINT);
+        away_club->update_standing(away_team_score, home_team_score, DRAW_POINT);
+    }
+    else if (home_team_score < away_team_score)
+    {
+        home_club->update_standing(home_team_score, away_team_score, LOSS_POINT);
+        away_club->update_standing(away_team_score, home_team_score, WIN_POINT);
+    }
+    else
+    {
+        home_club->update_standing(home_team_score, away_team_score, WIN_POINT);
+        away_club->update_standing(away_team_score, home_team_score, LOSS_POINT);
+    }
 }
 
 void FutFan::update_match_stats(int week_num, vector<string> &data)
@@ -199,34 +235,19 @@ void FutFan::update_match_stats(int week_num, vector<string> &data)
         if (j == TEAM2)
             team2 = split_line_into_words(data[j], NAME_DELIM);
     }
-    Match* current_match = new Match(home_team, away_team, home_team_score, away_team_score, team1, team2,
-        goals_assists);
-    current_match->update_players_score();
-    all_matches[week_num - 1].push_back(current_match);
-    if (home_team_score < away_team_score)
-        swap(home_team_score, away_team_score), swap(home_team, away_team);
-    Club *home_club = find_club_by_name(home_team);
-    Club *away_club = find_club_by_name(away_team);
-    if (home_team_score == away_team_score)
-    {
-        home_club->update_standing(home_team_score, away_team_score, DRAW_POINT);
-        away_club->update_standing(away_team_score, home_team_score, DRAW_POINT);
-    }
-    else
-    {
-        home_club->update_standing(home_team_score, away_team_score, WIN_POINT);
-        away_club->update_standing(away_team_score, home_team_score, LOSS_POINT);
-    }
+    add_new_match(home_team, away_team, home_team_score, away_team_score, team1, team2, goals_assists, week_num);
 }
 
 void FutFan::update_week_stats(int week_num)
 {
+    vector <Match*> empty_vec;
+    all_matches.push_back(empty_vec); // its for initializing the week so we can push matches
     for (Player *player : players)
     {
-        player->add_week_stats(week_num);
+        player->add_empty_week_stats(week_num);
     }
     string file_name = WEEK_STATS_FOLDER + "week_" + to_string(week_num) + ".csv";
-    vector<vector<string>> week = make_file_lines(file_name, COMMA);
+    vector<vector<string> > week = make_file_lines(file_name, COMMA);
     for (int i = 0; i < (int)week.size(); ++i)
     {
         if (i == JUNK_LINE)
@@ -305,10 +326,9 @@ string FutFan::print_players(vector<Player *> club_players)
 {
     ostringstream out;
     out << fixed << setprecision(SCORE_PRECISION);
-    out << "list of players:";
+    out << "list of players:" << endl;
     for (int i = 0; i < club_players.size(); ++i)
-        out << endl
-            << i << ". name: " << club_players[i]->get_name() << " | role: " << ROLE_ABB_NAME[club_players[i]->get_role()] << " | score: " << club_players[i]->calculate_avarage_score();
+        out << i << ". " << club_players[i]->output_stats();
     return out.str();
 }
 
@@ -342,7 +362,7 @@ string FutFan::matchs_of_the_week(int week_num)
     ostringstream out;
     for (Match* match : all_matches[week_num - 1])
     {
-        out << match->home << SPACE << match->home_goals << " | " << match->away << SPACE << match->away_goals << endl;
+        out << match->output_match();
     }
     return out.str();
 }

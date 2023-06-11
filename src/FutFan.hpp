@@ -21,6 +21,7 @@ public:
     Team* add_team(string team_name);
     void add_player_to_club(string club_name, string player_name);
     void make_new_week_stats(int week_num);
+    void add_new_match(string home_team, string away_team, int home_team_score, int away_team_score, vector <string> team1, vector <string> team2, vector <pair<string, string> > goals_assists, int week_num);
     void update_match_stats(int week_num, vector <string> &data);
     void update_week_stats(int week_num);
     string output_standing();
@@ -33,8 +34,8 @@ public:
 private:
     vector <Player*> players;
     vector <Club*> clubs;
-    vector<vector<Match*>> all_matches;
-    vector<vector<string>> make_file_lines(string file_address, char delimiter);
+    vector<vector<Match*> > all_matches;
+    vector<vector<string> > make_file_lines(string file_address, char delimiter);
     vector<Team*> teams;
 };
 

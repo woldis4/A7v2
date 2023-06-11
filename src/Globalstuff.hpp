@@ -10,6 +10,7 @@
 #include <iomanip>
 #include <map>
 #include <algorithm>
+#include <cmath>
 #include "Exception.hpp"
 
 
@@ -22,6 +23,7 @@ enum COMMAND_TYPE_NUM {TEAM_OF_THE_WEEK, PLAYERS, LEAGUE_STANDINGS, USERS_RANKIN
     MATCHES_RESULT_LEAGUE, SIGNUP, LOGIN, REGISTER_ADMIN, LOGOUT, SELL_PLAYER,
     BUY_PLAYER, SET_CAPTAIN, SQUAD, SHOW_BUDGET, CLOSE_TRANSFER_WINDOW, OPEN_TRANSFER_WINDOW, PASS_WEEK};
 
+enum SQUAD_POSITION { GLK, LB, CLB, CRB, RB, LM, CM, RM, LW, ST, RW };
 
 const string ROLE_NAME[] = {"GoalKeeper", "Defender", "Midfielder", "Forward"};
 const string ROLE_ABB_NAME[] = {"gk", "df", "md", "fw"};
@@ -70,7 +72,7 @@ const int JUNK_LINE = 0;
 const int ROLE_CNT = 4;
 const int GK_CNT = 1;
 const int DF_CNT = 2;
-const int MD_CNT = 1;
+const int MD_CNT = 1; //????
 const int FW_CNT = 1;
 const int DRAW_POINT = 1;
 const int WIN_POINT = 3;
@@ -82,6 +84,9 @@ const int ALLOWED_TRANSFERS_WHEN_COMPLETE = 2;
 const int NOT_PLAYED_SCORE = -1;
 const int SCORE_PRECISION = 1;
 const int DEFAULT_BUDGET = 2500;
+const int HOME_TEAM = 0;
+const int AWAY_TEAM = 1;
+const int SQUAD_CNT = 11;
 
 const string NOT_AVAILABLE_FOR_PURCHASE = "This Player is not available for next week";
 const string LEAGUE_ADDRESS = "data/premier_league.csv";
@@ -92,6 +97,8 @@ const string BAD_REQUEST = "Bad Request";
 const string PERMISSION_DENIED = "Permission Denied";
 const string NOT_FOUND = "Not Found";
 const string OK = "OK";
+const string OWN_GOAL = "OWN_GOAL";
+const string ENDLINE = "\n";
 
 vector <string> split_line_into_words(string line, char delimiter);
 

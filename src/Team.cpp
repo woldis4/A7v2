@@ -25,14 +25,26 @@ string Team::output_squad()
     for (int i = 0; i < ROLE_CNT; ++i)
         sort(squad[i].begin(), squad[i].end(), sort_by_player_name);
     
+    int total_cost = 0;
+
     out << "fantasy team: " << team_name << endl;
 
     int cnt = 0;
     for (int i = 0; i < ROLE_CNT; ++i)
+    {
         for (Player* player : squad[i])
-            out << SQUAD_POS_STR[cnt] << ": " << player->get_name() << endl, cnt++;
+        {
+            out << SQUAD_POS_STR[cnt] << ": " << player->get_name();
+            total_cost += player->get_price();
+            if (captain != NULL && player->get_name() == captain->get_name())
+                out << " (CAPTAIN)";
+            out << endl;
+            cnt++;
+        }
+    }
     out << fixed << setprecision(SCORE_PRECISION);
-    out << "Total Points: " << total_points;
+    out << "Total Points: " << total_points << endl;
+    out << "Team Cost: " << total_cost << endl;
     return out.str();
 }
 
@@ -40,6 +52,8 @@ void Team::buy_player(Player* player)
 {
     if (allowed_transfers <= 0)
         throw PermissionDenied();
+    if (budget - player->get_price() < 0)
+        throw BadRequest();
     int player_role = player->get_role();
     if ((int)squad[player_role].size() == SQUAD_POS_NUM[player_role])
         throw BadRequest();
@@ -113,7 +127,7 @@ void Team::update_new_week(int week_num)
         for (Player* player : squad[i])
         {
             float player_average_score = player->calculate_avarage_score();
-            if (player->get_name() == captain->get_name())
+            if (captain != NULL && player->get_name() == captain->get_name())
                 last_week_points += player_average_score*2;
             else
                 last_week_points += player_average_score;
