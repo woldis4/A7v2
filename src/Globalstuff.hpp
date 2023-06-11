@@ -5,10 +5,8 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <dirent.h>
 #include <sstream>
 #include <iomanip>
-#include <map>
 #include <algorithm>
 #include <cmath>
 #include "Exception.hpp"
@@ -70,10 +68,6 @@ const int YELLOW_CARD_SUS_DAYS = 1;
 const int INJURY_SUS_DAYS = 3;
 const int JUNK_LINE = 0;
 const int ROLE_CNT = 4;
-const int GK_CNT = 1;
-const int DF_CNT = 2;
-const int MD_CNT = 1; //????
-const int FW_CNT = 1;
 const int DRAW_POINT = 1;
 const int WIN_POINT = 3;
 const int LOSS_POINT = 0;

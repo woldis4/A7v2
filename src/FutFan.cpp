@@ -39,7 +39,7 @@ void FutFan::add_player(string player_name, int price, int role)
 {
     for (Player *player : players)
         if (player->get_name() == player_name)
-            return; // duplicate name error
+            return;
     if (role == GK)
         players.push_back(new Goalkeeper(player_name, price));
     if (role == DF)
@@ -85,7 +85,6 @@ void FutFan::add_player_to_club(string club_name, string player_name)
     Club *p_club = find_club_by_name(club_name);
     Player *p_player = find_player_by_name(player_name);
     p_club->add_player(p_player->get_role(), p_player);
-    // throw NotFound();
 }
 
 vector<vector<string>> FutFan::make_file_lines(string file_address, char delimiter)

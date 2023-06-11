@@ -35,14 +35,15 @@ void Club::update_standing(int goals_scored_, int goals_conceded_, int point_)
     points += point_;
 }
 
-void Club::add_player(int role, Player* p_player){
+void Club::add_player(int role, Player *p_player)
+{
     players[role].push_back(p_player);
 }
 
-vector <Player*> Club::get_player(int role)
+vector<Player *> Club::get_player(int role)
 {
-    vector <Player*> cur_players;
-    for(Player* player : players[role])
+    vector<Player *> cur_players;
+    for (Player *player : players[role])
         cur_players.push_back(player);
     return cur_players;
 }

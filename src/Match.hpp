@@ -5,7 +5,7 @@
 class Match
 {
 public:
-    Match(Club* home_ , Club* away_ , int home_goals_ , int away_goals_, 
+    Match(Club* home_ , Club* away_ , int home_goals_ , int away_goals_,
         vector <Player*> team1_, vector <Player*> team2_, vector <pair<string, string> > goals_assists_);
     void update_players_score(int week_num);
     string output_match();

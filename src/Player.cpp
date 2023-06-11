@@ -2,7 +2,7 @@
 
 float the_absolute_insane_crazy_algorithm_for_finding_definitly_correct_score_for_players(float a)
 {
-    return 10 / (1 + exp(-a/6));
+    return 10 / (1 + exp(-a / 6));
 }
 
 Player::Player(string _name, int _price, int _role)
@@ -49,16 +49,14 @@ void Player::update_injured(int week_num)
     weekstats[week_num].set_injured();
 }
 
-void Player::update_score(int week_num, int pos, vector <int> team1_g, vector <int> team1_a, 
-    vector <int> team1_og, vector <int> team2_g, vector <int> team2_a, vector <int> team2_og)
+void Player::update_score(int week_num, int pos, vector<int> team1_g, vector<int> team1_a,
+                          vector<int> team1_og, vector<int> team2_g, vector<int> team2_a, vector<int> team2_og)
 {
     int team1_goals = 0, team2_goals = 0;
     for (int i = 0; i < SQUAD_CNT; ++i)
         team1_goals += team1_g[i] + team2_og[i];
     for (int i = 0; i < SQUAD_CNT; ++i)
         team2_goals += team2_g[i] + team1_og[i];
-    
-
     float week_score = 0;
     if (team1_goals > team2_goals)
         week_score += 5;
@@ -66,13 +64,10 @@ void Player::update_score(int week_num, int pos, vector <int> team1_g, vector <i
         week_score += 1;
     else
         week_score -= 1;
-
     week_score -= 3 * team1_og[pos];
-
-    week_score += find_individual_score(week_num, pos, team1_goals, team2_goals, team1_g, 
-        team1_a, team2_g);
-
-    float the_most_correct_possible_value_for_a_player_score = 
+    week_score += find_individual_score(week_num, pos, team1_goals, team2_goals, team1_g,
+                                        team1_a, team2_g);
+    float the_most_correct_possible_value_for_a_player_score =
         the_absolute_insane_crazy_algorithm_for_finding_definitly_correct_score_for_players(week_score);
     weekstats[week_num].set_score(the_most_correct_possible_value_for_a_player_score);
 
@@ -80,7 +75,6 @@ void Player::update_score(int week_num, int pos, vector <int> team1_g, vector <i
     total_assists += team1_a[pos];
     if (!team2_goals)
         total_clean_sheets += 1;
-    
 }
 
 void Player::update_availability(int week_num)
@@ -129,7 +123,7 @@ float Player::calculate_avarage_score()
         cnt++;
         sum += week.get_score();
     }
-    if(!cnt)
+    if (!cnt)
         return 0;
     return sum / cnt;
 }
@@ -145,7 +139,8 @@ int Player::get_price()
 }
 
 Goalkeeper::Goalkeeper(string _name, int _price) : Player(_name, _price, GK)
-{}
+{
+}
 
 string Goalkeeper::output_stats()
 {
@@ -156,20 +151,21 @@ string Goalkeeper::output_stats()
     return out.str();
 }
 
-float Goalkeeper::find_individual_score(int week_num, int pos, int team1_score, int team2_score, 
-        vector <int> team1_g, vector <int> team1_a, vector <int> team2_g)
+float Goalkeeper::find_individual_score(int week_num, int pos, int team1_score, int team2_score,
+                                        vector<int> team1_g, vector<int> team1_a, vector<int> team2_g)
 {
     float individual_score = 3;
     if (!team2_score)
         individual_score += 5;
     else
         individual_score += (-1) * team2_score;
-    
+
     return individual_score;
 }
 
 Defender::Defender(string _name, int _price) : Player(_name, _price, DF)
-{}
+{
+}
 
 string Defender::output_stats()
 {
@@ -181,8 +177,8 @@ string Defender::output_stats()
     return out.str();
 }
 
-float Defender::find_individual_score(int week_num, int pos, int team1_score, int team2_score, 
-        vector <int> team1_g, vector <int> team1_a, vector <int> team2_g)
+float Defender::find_individual_score(int week_num, int pos, int team1_score, int team2_score,
+                                      vector<int> team1_g, vector<int> team1_a, vector<int> team2_g)
 {
     float individual_score = 1;
     if (!team2_score)
@@ -192,7 +188,7 @@ float Defender::find_individual_score(int week_num, int pos, int team1_score, in
 
     if (pos == LB)
         individual_score += (-1) * (team2_g[RB] + team2_g[RW]);
-    
+
     if (pos == RB)
         individual_score += (-1) * (team2_g[LB] + team2_g[LW]);
 
@@ -203,7 +199,8 @@ float Defender::find_individual_score(int week_num, int pos, int team1_score, in
 }
 
 Midfielder::Midfielder(string _name, int _price) : Player(_name, _price, MD)
-{}
+{
+}
 
 string Midfielder::output_stats()
 {
@@ -215,8 +212,8 @@ string Midfielder::output_stats()
     return out.str();
 }
 
-float Midfielder::find_individual_score(int week_num, int pos, int team1_score, int team2_score, 
-        vector <int> team1_g, vector <int> team1_a, vector <int> team2_g)
+float Midfielder::find_individual_score(int week_num, int pos, int team1_score, int team2_score,
+                                        vector<int> team1_g, vector<int> team1_a, vector<int> team2_g)
 {
     float individual_score = 0;
     if (!team2_score)
@@ -230,7 +227,8 @@ float Midfielder::find_individual_score(int week_num, int pos, int team1_score, 
 }
 
 Striker::Striker(string _name, int _price) : Player(_name, _price, FW)
-{}
+{
+}
 
 string Striker::output_stats()
 {
@@ -242,8 +240,8 @@ string Striker::output_stats()
     return out.str();
 }
 
-float Striker::find_individual_score(int week_num, int pos, int team1_score, int team2_score, 
-        vector <int> team1_g, vector <int> team1_a, vector <int> team2_g)
+float Striker::find_individual_score(int week_num, int pos, int team1_score, int team2_score,
+                                     vector<int> team1_g, vector<int> team1_a, vector<int> team2_g)
 {
     float individual_score = 0;
     if (!team1_g[pos])

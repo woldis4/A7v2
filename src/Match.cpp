@@ -54,7 +54,7 @@ void Match::update_players_score(int week_num)
                 team2_assists[i]++;
         }
     }
-    
+
     for (int i = 0; i < SQUAD_CNT; ++i)
     {
         team1[i]->update_score(week_num, i, team1_goals, team1_assists, team1_owngoals,
