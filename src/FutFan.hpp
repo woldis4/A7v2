@@ -13,12 +13,12 @@ class FutFan {
 public:
     ~FutFan();
     void get_league_data(string file_address);
-    Player* find_player_by_name(string player_name);
     Club* find_club_by_name(string club_name);
     Team* find_team_by_name(string team_name);
     void add_player(string player_name, int price, int role);
     void add_club(string club_name);
     Team* add_team(string team_name);
+    Player* find_player_by_name(string player_name);
     void add_player_to_club(string club_name, string player_name);
     void make_new_week_stats(int week_num);
     void add_new_match(string home_team, string away_team, int home_team_score, int away_team_score, vector <string> team1, vector <string> team2, vector <pair<string, string> > goals_assists, int week_num);

@@ -21,7 +21,7 @@ void WeekStats::set_yellow_card()
 
 void WeekStats::set_red_card()
 {
-    has_red_card = true; 
+    has_red_card = true;
 }
 
 void WeekStats::set_score( float score_)

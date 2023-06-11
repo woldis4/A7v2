@@ -15,7 +15,6 @@ public:
     bool get_has_yellow_card();
     bool get_has_red_card();
     bool get_is_injured();
-private:
     float score;
     int goals;
     int assists;
