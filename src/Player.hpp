@@ -36,6 +36,7 @@ protected:
     int role;
     int cnt_yellow_cards;
     bool can_play;
+    vector<WeekStats> weekstats;
 };
 
 class Goalkeeper : public Player
